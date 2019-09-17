@@ -296,7 +296,7 @@ def process_video(video_path, output_path, known_face_encodings, known_face_labe
         # t2 = time.time()
         # print("Write frame time: {}s".format(t2-t1))
 
-        # Commment the following if you don't want the program to crash
+        # We expect no more than one targets' face per frame
 #        if num_target_face > 1:               
 #            raise Exception("More than one target's face found for frame {}".format(frame_number))
 
@@ -306,11 +306,11 @@ def process_video(video_path, output_path, known_face_encodings, known_face_labe
     videocapture.release()
     cv2.destroyAllWindows()
 
-    # Write json
+    # Write face info to json
     output_filename = os.path.splitext(os.path.basename(video_path))[0] + "_faces.json"
     output_json = os.path.join(output_path, output_filename)
     with open(output_json, 'w') as outfile:
-        json.dump(face_output, outfile)
+        json.dump(face_output, outfile, sort_keys=True, indent=4)
 
     return known_face_encodings, known_face_labels
 
